@@ -72,3 +72,13 @@ isAvailable.addEventListener('change', e => {
     availabaleProducts(products, filters.availabaleProducts)
 
 })
+
+// Real-time display
+window.addEventListener('storage', e => {
+    
+    if (e.key === 'products') {
+        products = JSON.parse(e.newValue)
+        renderProducts(products, filters)
+    }
+
+})

@@ -18,7 +18,7 @@ const findProductbyId = (id) => {
 //// DO use methode findProductbyId()
 //  findProductbyId(productId)
 
-let productIndex = productsPage.findIndex((item) => {
+let productIndex = productsPage.findIndex(item => {
     return item.id == productPage.id
 })
 
@@ -59,8 +59,9 @@ productPrice.addEventListener('input', e => {
 
 // }
 
-// DO: >>> Make a methode to ifs in window object and un use form data 
+// Real-time display
 window.addEventListener('storage', e => {
+
     if (e.key === 'products') {
         productsPage = JSON.parse(e.newValue)
         productPage = findProductbyId(productId)
@@ -68,7 +69,7 @@ window.addEventListener('storage', e => {
         productTitle.value = productPage.title
         productPrice.value = productPage.price
         dateEl.textContent = lastEditeMessage(productPage.updated)
-        // productPrice.value = productPage.value.price
+
     }
 })
 
