@@ -1,23 +1,45 @@
-// Product data
-let products = []
-let product = []
+// window.addEventListener('storage', e => {
+//     if(e.key === 'products') {
+//         products = JSON.parse(e.newValue)
+//     }
+// })
+
 
 // QuerySelectorS to get Elements in Dom
 const showProducts = document.querySelector('#show-products')
 const formData = document.querySelector('#form-data')
 const searchInput = document.querySelector('#input-search')
-const showResualt = document.querySelector('#show-resualt')
 const isAvailable = document.querySelector('#is-available')
+const sort = document.querySelector('#sort')
+
+// Product data
+let products = []
+let product = []
+const filters = {
+    searchItem: '',
+    availabaleProducts: false,
+    sortBy: 'byEdited'
+}
+
 
 // Event dom loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
+    isAvailable.checked = true
     products = showDataProducts()
-    renderProducts(products)
+    renderProducts(products, filters)
 
 })
 
-// Event Submitform for save a Product
+// Event get sort
+sort.addEventListener('change', e => {
+
+    filters.sortBy = e.target.value
+    renderProducts(products, filters)
+
+})
+
+// Event Submitform save a Product
 formData.addEventListener('submit', e => {
 
     e.preventDefault()
@@ -26,27 +48,27 @@ formData.addEventListener('submit', e => {
     const productPrice = e.target.elements.inputPrice.value.trim()
     addProduct(products, newProduct, productPrice, isChecked)
     e.target.elements.inputTitle.value = ''
-    e.target.isAvailable.checked = false
-    isAvailable.checked = true
+    saveProducts(products)
+    renderProducts(products, filters)
 
 })
 
 // Event input for search product
 searchInput.addEventListener('input', e => {
 
-    product = e.target.value.trim().toLowerCase()
-    showResualt.innerHTML = ''
-    searchProducts(product)
+    if (!e.target.value.trim().length) {
+        renderProducts(products, filters)
+    } else {
+        product = e.target.value.trim().toLowerCase()
+        searchProducts(product)
+    }
 
 })
 
-// Event show availabale product
+// Event show availabale product And import this product is availbale
 isAvailable.addEventListener('change', e => {
 
-    const isChecked = e.target.checked
-    availabaleProducts(products, isChecked)
+    filters.availabaleProducts = e.target.checked
+    availabaleProducts(products, filters.availabaleProducts)
 
 })
-
-
-

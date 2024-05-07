@@ -1,40 +1,74 @@
-const formEl = document.getElementById("product-form").elements
-const formProduct = document.getElementById("product-form")
+const productTitle = document.querySelector("#productTitle")
+const productPrice = document.querySelector("#productPrice")
+const dateEl = document.querySelector("#last-edit")
 
-let  productsPage = showDataProducts()
-const productId = location.hash.substring(1)
+let productsPage = showDataProducts()
+let productId = location.hash.substring(1)
+let productPage = productsPage.find(item => item.id === productId)
 
-const productPage = productsPage.find((item, index) => {
-    return item.id === productId
-})
-
-if(productPage === undefined) {
-    location.assign('/index.html')
+const findProductbyId = (id) => {
+    let productIndex = productsPage.find(item => item.id == id)
+    if (productIndex === -1 ) {
+        return location.assign('./index.html')
+    } else {
+        return productIndex
+    }
 }
 
-formEl[0].value = productPage.title
-formEl[1].value = productPage.price
+//// DO use methode findProductbyId()
+//  findProductbyId(productId)
 
-// Form product values
-formProduct.addEventListener('submit', e => {
-    e.preventDefault()
-    productPage.title = e.target.elements.productTitle.value.trim()
-    productPage.price = e.target.elements.productPrice.value.trim()
+let productIndex = productsPage.findIndex((item) => {
+    return item.id == productPage.id
+})
 
-    const productIndex = productsPage.findIndex((item) => {
-        return item.id == productPage.id
-   })
+if (productPage === undefined) {
+    location.assign('./index.html')
+}
 
-    const productAvaibale = e.target.elements.productAvaibale.checked
-    if(!productAvaibale) {
-        const newProductsPage = productsPage.filter(item => item.id != productPage.id)
-        localStorage.setItem('products', JSON.stringify(newProductsPage))
-        
-    } 
+productTitle.value = productPage.title
+productPrice.value = productPage.price
+dateEl.textContent = lastEditeMessage(productPage.updated)
 
-   productsPage[productIndex] = productPage
-   localStorage.setItem('products', JSON.stringify(productsPage))
+// Gete updat value
+productTitle.addEventListener('input', e => {
+
+    productPage.title = e.target.value.trim()
+    productPage.updated = timestamp
+    dateEl.textContent = lastEditeMessage(productPage.updated)
+    updateByIndex(productsPage, productPage, productIndex)
+    saveProducts(productsPage)
+
+})
+productPrice.addEventListener('input', e => {
+
+    productPage.price = e.target.value.trim()
+    productPage.updated = timestamp
+    dateEl.textContent = lastEditeMessage(productPage.updated)
+    updateByIndex(productsPage, productPage, productIndex)
+    saveProducts(productsPage)
 
 })
 
- 
+// const productAvaibale = e.target.elements.productAvaibale.checked
+// if (!productAvaibale) {
+//     const newProductsPage = productsPage.filter(item => item.id != productPage.id)
+//     console.log(newProductsPage);
+//     saveProducts(newProductsPage)
+//     location.assign('./index.html')
+
+// }
+
+// DO: >>> Make a methode to ifs in window object and un use form data 
+window.addEventListener('storage', e => {
+    if (e.key === 'products') {
+        productsPage = JSON.parse(e.newValue)
+        productPage = findProductbyId(productId)
+   
+        productTitle.value = productPage.title
+        productPrice.value = productPage.price
+        dateEl.textContent = lastEditeMessage(productPage.updated)
+        // productPrice.value = productPage.value.price
+    }
+})
+

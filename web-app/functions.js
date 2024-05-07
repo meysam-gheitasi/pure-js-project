@@ -1,27 +1,42 @@
+// Create  date 
+const timestamp = moment().valueOf()
+
+
+// Save products to Storage
+const saveProducts = (products) => {
+
+    products !== null && localStorage.setItem('products', JSON.stringify(products))
+
+}
+
 // Show products
 const showDataProducts = () => {
 
-    const dataLocalStorage = JSON.parse(localStorage.getItem('products'))
-    return dataLocalStorage !== null ? dataLocalStorage : []
+    const dataStorage = JSON.parse(localStorage.getItem('products'))
+    if( dataStorage !== null)
+    products = dataStorage
+    return products
 }
 
 // Add new product
 const addProduct = (products, product, price, isChecked) => {
 
+    const id = uuid()
     products.push({
-        id: uuid(),
+        id: id,
         title: product,
         price: price,
-        exist: isChecked
+        exist: isChecked,
+        created: timestamp,
+        updated: timestamp
     })
-    renderProducts(products)
 
 }
 
 // Render products
-const renderProducts = (products) => {
+const renderProducts = (products, filters) => {
 
-    products !== null ?  localStorage.setItem('products', JSON.stringify(products)) : []
+    products = sortProducts(products, filters.sortBy)
     document.querySelector('#show-products').innerHTML = ''
     products.forEach(item => {
         document.querySelector('#show-products').appendChild(createElementDOM(products, item))
@@ -70,29 +85,26 @@ const createElementDOM = (products, product) => {
 const removeProduct = (products, product) => {
 
     const newProducts = products.filter(item => item.id != product.id)
-    renderProducts(newProducts)
-
-}
-
-// Add event to elements
-const addEventEl = () => {
+    saveProducts(newProducts)
+    products = showDataProducts()
+    renderProducts(newProducts, filters)
 
 }
 
 // Show available productsa
-const availabaleProducts = (products, checked) => {
+const availabaleProducts = (products, filters) => {
 
-    if (checked) {
+    if (filters) {
         products.forEach(item => {
             if (item.exist) {
                 showProducts.innerHTML = ''
                 const newElement = document.createElement('p')
-                newElement.textContent = `${item.title} exist: ${item.exist}`
+                newElement.textContent = `${item.title} exist:  ${item.exist}`
                 showProducts.appendChild(newElement)
             }
         })
     } else {
-        renderProducts(products)
+        renderProducts(products, filters)
     }
 
 }
@@ -104,18 +116,7 @@ const searchProducts = (product) => {
         return item.title.toLowerCase().includes(product)
     })
 
-    if (!product.length) {
-
-        showResualt.innerHTML = ''
-    } else {
-        resaultProduct.forEach(item => {
-
-            const p = document.createElement('p')
-            p.textContent = item.title
-            showResualt.appendChild(p)
-
-        })
-    }
+    product.length && renderProducts(resaultProduct, filters)
 
 }
 
@@ -125,7 +126,48 @@ const cheangeExist = (products, product, isChecked) => {
     let indeX = products.findIndex(item => item === product)
     if (indeX !== undefined) {
         products[indeX].exist = isChecked
-        renderProducts(products)
+        saveProducts(products)
+        renderProducts(products, filters)
     }
 
+}
+
+// Update with index
+const updateByIndex = (products, productUpdate, index) => {
+    products[index] = productUpdate
+}
+
+// Last edite product time
+const lastEditeMessage = (timestamp) => {
+
+    return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
+
+}
+
+// Sort products
+const sortProducts = (products, sortBy) => {
+    
+    if (sortBy === 'byEdited') {
+        return products.sort((a, b) => {
+            if (a.updated > b.updated) {
+                return -1
+            } else if (a.updated < b.updated) {
+                return 1
+            } else {
+                return 0
+            }
+        })
+    } else if (sortBy === 'byCreated') {
+        return products.sort((a, b) => {
+            if (a.created > b.created) {
+                return -1
+            } else if (a.created < b.created) {
+                return 1
+            } else {
+                return 0
+            }
+        })
+    } else {
+        return products
+    }
 }
