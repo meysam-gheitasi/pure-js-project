@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Store</title>
+</head>
+<body>
+    <h1>Book Store</h1>
+
+    <div class="">
+        <label for="sort">Sort is</label>
+        <select name="sort" id="sort">
+            <option value="byEdited">by edite</option>
+            <option value="byCreated">by create</option>
+        </select>
+    </div>
+
+    <form id="form-data">
+        <input id="is-available" type="checkbox" name="isAvailable">
+        <label for="isAvailable">Exist Product</label>
+        <input id="input-search" type="search" name="inputTitle" required  placeholder="Product name">
+        <input id="Product-price" type="number" name="inputPrice" required placeholder="Product price">
+        <button>Add or Search</button>
+    </form>
+    <div id="show-products" style="margin-top: 100px;"></div>
+
+    <script src="moment.js"></script>
+    <script src="jalali-moment.js"></script>
+    <script src="uuid.js"></script>
+    <script src="functions.js"></script>
+    <script src="createProducts.js"></script>
+</body>
+</html>

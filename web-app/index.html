@@ -1,32 +1,41 @@
 <!DOCTYPE html>
+
 <html>
-<head>
-    <title>Book Store</title>
-</head>
-<body>
-    <h1>Book Store</h1>
-
-    <div class="">
-        <label for="sort">Sort is</label>
-        <select name="sort" id="sort">
-            <option value="byEdited">by edite</option>
-            <option value="byCreated">by create</option>
-        </select>
+  <head>
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/all.min.css" />
+    <title>Shopping Cart</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-center">
+        <div class="cart-btn">
+          <span class="nav-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </span>
+          <div class="cart-items">0</div>
+        </div>
+      </div>
+    </nav>
+    <section class="products">
+      <div class="section-title">
+        <h2>محصولات</h2>
+      </div>
+      <div class="products-center"></div>
+    </section>
+    <div class="cart-overlay">
+      <div class="cart">
+        <span class="close-cart">
+          <i class="fas fa-times"></i>
+        </span>
+        <h2>سبد خرید</h2>
+        <div class="cart-content"></div>
+        <div class="cart-footer">
+          <h3>مجموع قیمت: <span class="cart-total">۸۹</span></h3>
+          <button class="clear-cart btn">حذف محصولات</button>
+        </div>
+      </div>
     </div>
-
-    <form id="form-data">
-        <input id="is-available" type="checkbox" name="isAvailable">
-        <label for="isAvailable">Exist Product</label>
-        <input id="input-search" type="search" name="inputTitle" required  placeholder="Product name">
-        <input id="Product-price" type="number" name="inputPrice" required placeholder="Product price">
-        <button>Add or Search</button>
-    </form>
-    <div id="show-products" style="margin-top: 100px;"></div>
-
-    <script src="moment.js"></script>
-    <script src="jalali-moment.js"></script>
-    <script src="uuid.js"></script>
-    <script src="functions.js"></script>
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
