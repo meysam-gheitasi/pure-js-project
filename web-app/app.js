@@ -9,7 +9,10 @@ const cartDom = document.querySelector('.cart')
 const cartOverlay = document.querySelector('.cart-overlay')
 
 const cartButton = document.querySelector('.cart-btn')
-const closeButton  = document.querySelector('.close-cart')
+const closeButton = document.querySelector('.close-cart')
+
+const clearCartBtn = document.querySelector('.clear-cart')
+const removeItemBtn = document.querySelector('.remove-item')
 
 let cart = []
 
@@ -88,7 +91,7 @@ const setCartValues = cart => {
 
   let totoalPrice = 0
   let totalItems = 0
-  
+
   cart.forEach(item => {
     totoalPrice += item.price * item.amount
     totalItems += item.amount
@@ -104,17 +107,17 @@ const addCartItem = item => {
   const div = document.createElement('div')
   div.classList.add('cart-item')
 
-    div.innerHTML = `
-      <img src="${item.image}" alt="${item.title}" />
+  div.innerHTML = `
+      <img src=${item.image} alt=${item.title} />
       <div>
         <h4>${item.title}</h4>
         <h5>${item.price}</h5>
-        <span class="remove-item">حذف</span>
+        <span class="remove-item" data-id=${item.id}>حذف</span>
       </div>
       <div>
-        <i class="fas-fa-chevron-up"></i>
+        <i class="fas fa-chevron-up" data-id=${item.id}></i>
         <p class="item-amount">${item.amount}</p>
-        <i class="fas-fa-chevron-down"></i>
+        <i class="fas fa-chevron-down" data-id=${item.id}></i>
       </div>
     `
 
@@ -123,7 +126,7 @@ const addCartItem = item => {
 }
 
 const showCart = () => {
-  
+
   cartOverlay.classList.add('transparentBcg')
   cartDom.classList.add('showCart')
 
@@ -156,6 +159,75 @@ const populate = (cart) => {
 
 }
 
+const cartProcess = () => {
+
+  clearCartBtn.addEventListener('click', () => {
+
+    clearCart()
+
+  })
+
+  cartContent.addEventListener('click', e => {
+
+    if (e.target.classList.contains('remove-item')) {
+
+      let item = e.target
+      let id = item.dataset.id
+
+      cartContent.removeChild(item.parentElement.parentElement)
+      removeProduct(id)
+    }
+
+    e.target.classList.contains('fa-chevron-up') && changeAmount(e.target, 'increase')
+
+    e.target.classList.contains('fa-chevron-down') && changeAmount(e.target, 'decrease')
+
+  })
+}
+
+const clearCart = () => {
+
+  const cartsId = cart.map(item => item.id)
+
+  cartsId.forEach(item => removeProduct(item))
+
+  while (cartContent.children.length > 0) {
+    cartContent.removeChild(cartContent.children[0])
+  }
+
+}
+
+const removeProduct = id => {
+
+  cart = cart.filter(item => item.id !== id)
+  setCartValues(cart)
+  saveCart(cart)
+
+}
+
+const changeAmount = (productTraget, type) => {
+
+  let item = productTraget
+  let id = item.dataset.id
+  let product = cart.find(item => item.id === id)
+
+  if (type === 'increase') {
+    product.amount += 1
+    item.nextElementSibling.innerText = product.amount
+  } else if (type === 'decrease' && product.amount > 1) {
+    product.amount -= 1
+    item.previousElementSibling.innerText = product.amount
+  } else {
+    cartContent.removeChild(item.parentElement.parentElement)
+    removeProduct(id)
+    return
+  }
+
+  setCartValues(cart)
+  saveCart(cart)
+
+}
+
 // save and read data as locale storage:
 
 const saveProducts = products => {
@@ -170,9 +242,9 @@ const saveCart = cart => {
 }
 const getCart = () => {
 
-  return localStorage.getItem('cart') 
-  ? JSON.parse(localStorage.getItem('cart')) 
-  : []
+  return localStorage.getItem('cart')
+    ? JSON.parse(localStorage.getItem('cart'))
+    : []
 
 }
 
@@ -193,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
     .then(() => {
       getCardbuttons()
+      cartProcess()
     })
 
 })
