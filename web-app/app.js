@@ -1,271 +1,47 @@
-const productsDOM = document.querySelector('.products-center')
+import {showPost} from './pages/posts.js'
 
-const cartItems = document.querySelector('.cart-items')
-const cartIotal = document.querySelector('.cart-total')
+const navTo = (url) => {
+    history.pushState(null, null, url)
+    router()
+}
 
-const cartContent = document.querySelector('.cart-content')
+const router = () => {
+    const routes = [
+        { path: '/web-app/index', view: () => console.log('/index') },
+        { path: '/web-app/last-videos', view: () => console.log('/last-videos') },
+        { path: '/web-app/last-posts', view: showPost }
+    ]
 
-const cartDom = document.querySelector('.cart')
-const cartOverlay = document.querySelector('.cart-overlay')
-
-const cartButton = document.querySelector('.cart-btn')
-const closeButton = document.querySelector('.close-cart')
-
-const clearCartBtn = document.querySelector('.clear-cart')
-const removeItemBtn = document.querySelector('.remove-item')
-
-let cart = []
-
-const getData = async () => {
-
-  try {
-
-    const result = await fetch('products.json')
-    const data = await result.json()
-    let products = data.items
-
-    products = products.map(item => {
-
-      const { id } = item.sys
-      const { title, price } = item.fields
-      const image = item.fields.image.fields.file.url
-
-      return { id, title, price, image }
+    let matchRoutes = routes.map(item => {
+        return {
+            route: item,
+            isMatch: location.pathname === item.path
+        }
     })
 
-    return products
+    const match = matchRoutes.find(item => item.isMatch)
 
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-// display Products mehtods :
-
-const displayProducts = products => {
-
-  let result = ''
-
-  products.forEach(item => {
-    result += `
-    <article class="product">
-      <div class="img-container">
-        <img
-          src=${item.image}
-          alt=${item.title}
-          class="product-img"
-        />
-        <button class="bag-btn" data-id=${item.id}>افزودن به سبد خرید</button>
-      </div>
-      <h3>${item.title}</h3>
-      <h4>${item.price}</h4>
-    </article>
-    `
-  })
-
-  productsDOM.innerHTML = result
-
-}
-
-const getCardbuttons = () => {
-
-  const bagbtns = [...document.querySelectorAll('.bag-btn')]
-
-  bagbtns.forEach(item => {
-
-    item.addEventListener('click', e => {
-
-      let id = e.target.dataset.id
-      let cartItem = { ...getProducts(id), amount: 1 }
-      cart = [...cart, cartItem]
-      addCartItem(cartItem)
-      setCartValues(cart)
-      saveCart(cart)
-
-    })
-
-  })
-}
-
-const setCartValues = cart => {
-
-  let totoalPrice = 0
-  let totalItems = 0
-
-  cart.forEach(item => {
-    totoalPrice += item.price * item.amount
-    totalItems += item.amount
-  })
-
-  cartIotal.innerText = totoalPrice
-  cartItems.innerText = totalItems
-
-}
-
-const addCartItem = item => {
-
-  const div = document.createElement('div')
-  div.classList.add('cart-item')
-
-  div.innerHTML = `
-      <img src=${item.image} alt=${item.title} />
-      <div>
-        <h4>${item.title}</h4>
-        <h5>${item.price}</h5>
-        <span class="remove-item" data-id=${item.id}>حذف</span>
-      </div>
-      <div>
-        <i class="fas fa-chevron-up" data-id=${item.id}></i>
-        <p class="item-amount">${item.amount}</p>
-        <i class="fas fa-chevron-down" data-id=${item.id}></i>
-      </div>
-    `
-
-  cartContent.appendChild(div)
-
-}
-
-const showCart = () => {
-
-  cartOverlay.classList.add('transparentBcg')
-  cartDom.classList.add('showCart')
-
-}
-
-const closeCart = () => {
-
-  cartOverlay.classList.remove('transparentBcg')
-  cartDom.classList.remove('showCart')
-
-}
-
-cartButton.addEventListener('click', showCart)
-
-closeButton.addEventListener('click', closeCart)
-
-const initApp = () => {
-
-  cart = getCart()
-  setCartValues(cart)
-  populate(cart)
-
-}
-
-const populate = (cart) => {
-
-  cart.forEach(item => {
-    return addCartItem(item)
-  })
-
-}
-
-const cartProcess = () => {
-
-  clearCartBtn.addEventListener('click', () => {
-
-    clearCart()
-
-  })
-
-  cartContent.addEventListener('click', e => {
-
-    if (e.target.classList.contains('remove-item')) {
-
-      let item = e.target
-      let id = item.dataset.id
-
-      cartContent.removeChild(item.parentElement.parentElement)
-      removeProduct(id)
+    if(!match) {
+        match = {
+            route: routes[0],
+            isMatch: true
+        }
     }
-
-    e.target.classList.contains('fa-chevron-up') && changeAmount(e.target, 'increase')
-
-    e.target.classList.contains('fa-chevron-down') && changeAmount(e.target, 'decrease')
-
-  })
-}
-
-const clearCart = () => {
-
-  const cartsId = cart.map(item => item.id)
-
-  cartsId.forEach(item => removeProduct(item))
-
-  while (cartContent.children.length > 0) {
-    cartContent.removeChild(cartContent.children[0])
-  }
+    document.querySelector('#app').innerHTML = match.route.view()
+    console.log(match.route.view());
 
 }
 
-const removeProduct = id => {
-
-  cart = cart.filter(item => item.id !== id)
-  setCartValues(cart)
-  saveCart(cart)
-
-}
-
-const changeAmount = (productTraget, type) => {
-
-  let item = productTraget
-  let id = item.dataset.id
-  let product = cart.find(item => item.id === id)
-
-  if (type === 'increase') {
-    product.amount += 1
-    item.nextElementSibling.innerText = product.amount
-  } else if (type === 'decrease' && product.amount > 1) {
-    product.amount -= 1
-    item.previousElementSibling.innerText = product.amount
-  } else {
-    cartContent.removeChild(item.parentElement.parentElement)
-    removeProduct(id)
-    return
-  }
-
-  setCartValues(cart)
-  saveCart(cart)
-
-}
-
-// save and read data as locale storage:
-
-const saveProducts = products => {
-
-  localStorage.setItem('productsData', JSON.stringify(products))
-
-}
-const saveCart = cart => {
-
-  localStorage.setItem('cart', JSON.stringify(cart))
-
-}
-const getCart = () => {
-
-  return localStorage.getItem('cart')
-    ? JSON.parse(localStorage.getItem('cart'))
-    : []
-
-}
-
-const getProducts = id => {
-
-  let products = JSON.parse(localStorage.getItem('productsData'))
-  return products.find(item => item.id === id)
-
-}
+window.addEventListener('popstate', router)
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  initApp()
-
-  getData().then(data => {
-    displayProducts(data)
-    saveProducts(data)
-  })
-    .then(() => {
-      getCardbuttons()
-      cartProcess()
+    document.body.addEventListener('click', e => {
+        if(e.target.matches('[data-link]')) {
+            e.preventDefault()
+            navTo(e.target.href)
+        }
     })
 
+    router()
 })
