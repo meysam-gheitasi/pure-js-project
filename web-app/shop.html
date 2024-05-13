@@ -15,11 +15,29 @@
           </span>
           <div class="cart-items">0</div>
         </div>
+        <div>
+          <span>Admin</span>
+          <i class="fas fa-gem"></i>
+        </div>
       </div>
     </nav>
     <section class="products">
       <div class="section-title">
-        <h2>محصولات</h2>
+       <div class="section-title-chaild">
+        <div>
+          <select name="sort-product" id="sortProduct">
+            <i class="fas fa-sort-amount-down"></i>
+            <option value="byCreated">by create</option>
+            <option value="byEdited">by edited</option>
+          </select>
+        </div>
+        <h2>Store</h2>
+        <button class="edit-products-btn">
+          <a href="./createProducts.html">
+            Edit Products
+          </a>
+        </button>
+       </div>
       </div>
       <div class="products-center"></div>
     </section>

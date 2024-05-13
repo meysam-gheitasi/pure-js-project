@@ -1,0 +1,232 @@
+@font-face {
+    font-family: 'Vazir-FD';
+    src: url('../webfonts/Vazir-FD.woff');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #161b33;
+    --secondary: #dddddd;
+    --text-nav: #f1dac4;
+    --text-body: #0d0c1d;
+    --bg-cart: #f1f1f2;
+    --input-border: #969596;
+    --input-focus-h: 245;
+    --input-focus-s: 100%;
+    --input-focus-l: 42%;
+}
+
+body {
+    background-color: var(--secondary);
+    font-family: 'Vazir-FD';
+    color: var(--text-body);
+}
+
+a {
+    padding: 0.16em 0.5em;
+    margin: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.020rem;
+    font-size: 1.3rem;
+    color: var(--text-body);
+    background-color: var(--bg-cart);
+}
+
+a:hover {
+    color: blue;
+}
+
+input {
+    font-size: 16px;
+    font-size: max(16px, 1em);
+    font-family: inherit;
+    padding: 0.40em 0.5em;
+    background-color: #fff;
+    border: 1px solid var(--input-border);
+    border-radius: 3px;
+}
+
+#form-data button {
+    border-radius: 4px;
+    padding: 0.16em 0.5em;
+    height: 39px;
+    letter-spacing: 0.06rem;
+    border-color: #fff;
+    background-color: var(--bg-cart);
+    cursor: pointer;
+}
+
+.delete-btn {
+    border-radius: 4px;
+    padding: 0.16em 0.5em;
+    height: 3em;
+    letter-spacing: 0.06rem;
+    border-color: #fff;
+    background-color: var(--bg-cart);
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 400ms;
+}
+
+.delete-btn:hover {
+    background-color: #d3d2d2;
+    animation-duration: 1000ms;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    height: 60px;
+    width: 100%;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    background-color: var(--primary);
+    color: var(--text-nav);
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    z-index: 1;
+}
+
+.navbar-center {
+    width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    direction: rtl;
+}
+
+.nav-icon {
+    font-size: 1.5rem;
+}
+
+.fa-gem {
+    font-size: 1.3rem;
+}
+
+.cart-btn {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-items {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 0 5px;
+    border-radius: 30%;
+    background-color: var(--secondary);
+    color: var(--text-body);
+}
+
+.btn {
+    padding: 1rem 3rem;
+    font-size: 1rem;
+    background: var(--primary);
+    color: var(--text-nav);
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+.products {
+    padding: 4rem 0;
+    direction: rtl;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.section-title {
+    display: grid;
+    justify-items: center;
+    margin-bottom: 5rem;
+    margin-top: 4rem;
+}
+
+.section-title-chaild {
+    width: 910px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2.5rem;
+}
+
+#sort {
+    color: var(--text-body);
+    border-radius: 4px;
+    border-color: transparent transparent #fff transparent;
+    padding: 9px 21px;
+    background-color: var(--bg-cart);
+    cursor: pointer;
+}
+
+.section-title h2 {
+    letter-spacing: 0.1rem;
+    font-size: 2.5rem;
+}
+
+.edit-products-btn {
+    border-radius: 4px;
+    padding: 5px 21px;
+    height: 40px;
+    letter-spacing: 0.06rem;
+    border-color: #fff;
+    background-color: var(--bg-cart);
+    cursor: pointer;
+    transition: background-color 800ms;
+}
+
+#form-data {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: 5rem;
+    margin-top: 4rem;
+    gap: 13px;
+}
+
+#form-data div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-products-btn:hover {
+    background-color: #d3d2d2;
+    animation-duration: 1000ms;
+}
+
+.edit-products-btn a {
+    text-decoration: none;
+    color: var(--text-body);
+}
+
+#show-products {
+    width: 90vw;
+    margin: 0 auto;
+    max-width: 1170px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 2rem;
+}
+
+#show-products div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+input[type="checkbox"] {
+    width: 2em;
+    height: 2rem;
+    accent-color: var(--primary);
+}

@@ -63,6 +63,7 @@ const createElementDOM = (products, product) => {
         cheangeExist(products, product, isChecked)
     })
 
+    btnEl.setAttribute('class', 'delete-btn')
     btnEl.textContent = 'Delete'
     btnEl.addEventListener('click', e => {
         removeProduct(products, product)

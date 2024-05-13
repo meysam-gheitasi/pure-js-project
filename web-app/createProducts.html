@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="./styles/createProducts.css" />
+    <link rel="stylesheet" href="./styles/all.min.css" />
     <title>Book Store</title>
 </head>
 <body>
-    <h1>Book Store</h1>
-
-    <div class="">
-        <label for="sort">Sort is</label>
-        <select name="sort" id="sort">
-            <option value="byEdited">by edite</option>
+    <nav class="navbar">
+        <div class="navbar-center">
+          <div class="cart-btn">
+            <span class="nav-icon">
+              <i class="fas fa-th-large"></i>
+            </span>
+            <div class="cart-items">0</div>
+          </div>
+          <div>
+            <span>Admin</span>
+            <i class="fas fa-gem"></i>
+          </div>
+        </div>
+      </nav>
+    
+      <div class="section-title">
+        <div class="section-title-chaild">
+         <div>
+           <select name="sort" id="sort">
+             <i class="fas fa-sort-amount-down"></i>
+             <option value="byEdited">by edite</option>
             <option value="byCreated">by create</option>
-        </select>
-    </div>
+           </select>
+         </div>
+         <h2>Store</h2>
+         <button class="edit-products-btn">
+           <a href="./shop.html">
+             Go to shop
+           </a>
+         </button>
+        </div>
+       </div>
+
 
     <form id="form-data">
-        <input id="is-available" type="checkbox" name="isAvailable">
-        <label for="isAvailable">Exist Product</label>
         <input id="input-search" type="search" name="inputTitle" required  placeholder="Product name">
         <input id="Product-price" type="number" name="inputPrice" required placeholder="Product price">
-        <button>Add or Search</button>
+       <div>
+        <label for="isAvailable">Exist Product:</label>
+        <input id="is-available" type="checkbox" name="isAvailable">
+        <button>Creat</button>
+       </div>
     </form>
     <div id="show-products" style="margin-top: 100px;"></div>
 
