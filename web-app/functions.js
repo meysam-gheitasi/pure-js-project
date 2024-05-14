@@ -16,7 +16,7 @@ const showDataProducts = () => {
     return products
 }
 
-// Add new product
+// Add new product /c
 const addProduct = (products, product, price, isChecked) => {
 
     const id = uuid()
@@ -116,12 +116,12 @@ const searchProducts = (product) => {
     product.length && renderProducts(resaultProduct, filters)
 }
 
-// Change exist product
-const cheangeExist = (products, product, isChecked) => {
+// Change exist product /c
+const cheangeExist = (products, product, check) => {
 
     let indeX = products.findIndex(item => item === product)
     if (indeX !== undefined) {
-        products[indeX].exist = isChecked
+        products[indeX].exist = check
         saveProducts(products)
         renderProducts(products, filters)
     }
@@ -137,7 +137,7 @@ const lastEditeMessage = (timestamp) => {
     return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
 }
 
-// Sort products
+// Sort products /c
 const sortProducts = (products, sortBy) => {
 
     if (sortBy === 'byEdited') {

@@ -82,15 +82,83 @@ const eventDeleteOrChangeAmount = (element, eventName, key, value) => {
         e.target.classList.contains('fa-chevron-down') && changeAmount(e.target, 'decrease')
     })
 }
-const postData = () => {
-    const jsonData = JSON.stringify(products.map((product, index) => {
+// create new product with push in array and save to local storage and post to json file
+const createProduct = (name, price, check, key, value) => {
+
+    const id = createID()
+    value.push({
+        id: id,
+        title: name,
+        price: price,
+        exist: check,
+        created: timestamp(),
+        updated: timestamp()
+    })
+    saveData(key, value)
+    postData(value)
+}
+// post json to save in json file
+const postData = async (value) => {
+
+    const jsonData = JSON.stringify(value.map((item) => {
         return {
-            sys: { id: (index + 1).toString() },
+            sys: { id: item.id },
             fields: {
-                title: product.name,
-                price: parseFloat(product.price),
-                image: { fields: { file: { url: `./images/product-${index + 1}.jpg` } } }
+                title: item.name,
+                price: parseFloat(item.price),
+                created: item.created,
+                updated: item.updated,
+                image: { fields: { file: { url: './images/product-1.jpg' } } }
             }
         };
     }));
+
+    try {
+        const respons = await fetch('products.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+        // for test this method
+        const data = await respons.json()
+        console.log('Send data success.');
+        return data
+    } catch (error) {
+        console.log('Error is:', error)
+        throw error;
+    }
+}
+// sort data
+const sortProducts = (value, sortBy) => {
+
+     const compareFunction = (a, b) => {
+        if (a[sortBy] > b[sortBy]) {
+            return -1;
+        } else if (a[sortBy] < b[sortBy]) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+
+    if (sortBy === 'byEdited' || sortBy === 'byCreated') {
+        return value.sort(compareFunction);
+    } else {
+        return value;
+    }
+}
+// show last edite
+const lastEditeMessage = (timestamp) => {
+    return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
+}
+// change exist product with indexOf return true and false
+const cheangeExist = (value, product, check) => {
+    let index = value.indexOf(product);
+    if (index !== -1) {
+        value[index].exist = check;
+        return true
+    }
+    return false
 }
