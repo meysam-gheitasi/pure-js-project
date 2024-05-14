@@ -1,20 +1,18 @@
-// Create  date 
+// Create  date /C
 const timestamp = moment().valueOf()
 
 
-// Save products to Storage
+// Save products to Storage /c
 const saveProducts = (products) => {
-
     products !== null && localStorage.setItem('products', JSON.stringify(products))
-
 }
 
 // Show products
 const showDataProducts = () => {
 
     const dataStorage = JSON.parse(localStorage.getItem('products'))
-    if( dataStorage !== null)
-    products = dataStorage
+    if (dataStorage !== null)
+        products = dataStorage
     return products
 }
 
@@ -30,7 +28,6 @@ const addProduct = (products, product, price, isChecked) => {
         created: timestamp,
         updated: timestamp
     })
-
 }
 
 // Render products
@@ -41,21 +38,24 @@ const renderProducts = (products, filters) => {
     products.forEach(item => {
         document.querySelector('#show-products').appendChild(createElementDOM(products, item))
     })
+}
 
+const createElement = element => {
+    return document.createElement(element)
 }
 
 // Create element
 const createElementDOM = (products, product) => {
 
-    const parentEl = document.createElement('div')
+    const parentEl = createElement('div')
 
-    const aEl = document.createElement('a')
+    const aEl = createElement('a')
     aEl.setAttribute('href', `./productSingle.html#${product.id}`)
 
-    const productEl = document.createElement('span')
-    const btnEl = document.createElement("button")
+    const productEl = createElement('span')
+    const btnEl = createElement("button")
 
-    const existEl = document.createElement("input");
+    const existEl = createElement("input");
     existEl.setAttribute("type", "checkbox");
 
     existEl.addEventListener('change', e => {
@@ -79,7 +79,6 @@ const createElementDOM = (products, product) => {
     parentEl.appendChild(btnEl)
 
     return parentEl
-
 }
 
 // Remove product
@@ -89,7 +88,6 @@ const removeProduct = (products, product) => {
     saveProducts(newProducts)
     products = showDataProducts()
     renderProducts(newProducts, filters)
-
 }
 
 // Show available productsa
@@ -99,7 +97,7 @@ const availabaleProducts = (products, filters) => {
         products.forEach(item => {
             if (item.exist) {
                 showProducts.innerHTML = ''
-                const newElement = document.createElement('p')
+                const newElement = createElement('p')
                 newElement.textContent = `${item.title} exist:  ${item.exist}`
                 showProducts.appendChild(newElement)
             }
@@ -107,7 +105,6 @@ const availabaleProducts = (products, filters) => {
     } else {
         renderProducts(products, filters)
     }
-
 }
 
 // Search product
@@ -116,9 +113,7 @@ const searchProducts = (product) => {
     const resaultProduct = products.filter(item => {
         return item.title.toLowerCase().includes(product)
     })
-
     product.length && renderProducts(resaultProduct, filters)
-
 }
 
 // Change exist product
@@ -130,7 +125,6 @@ const cheangeExist = (products, product, isChecked) => {
         saveProducts(products)
         renderProducts(products, filters)
     }
-
 }
 
 // Update with index
@@ -140,14 +134,12 @@ const updateByIndex = (products, productUpdate, index) => {
 
 // Last edite product time
 const lastEditeMessage = (timestamp) => {
-
     return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
-
 }
 
 // Sort products
 const sortProducts = (products, sortBy) => {
-    
+
     if (sortBy === 'byEdited') {
         return products.sort((a, b) => {
             if (a.updated > b.updated) {
@@ -168,7 +160,6 @@ const sortProducts = (products, sortBy) => {
                 return 0
             }
         })
-    } else {
+    } else
         return products
-    }
 }

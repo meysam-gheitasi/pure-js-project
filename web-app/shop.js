@@ -205,9 +205,8 @@ const removeProduct = id => {
 
 }
 
-const changeAmount = (productTraget, type) => {
+const changeAmount = (item, type) => {
 
-  let item = productTraget
   let id = item.dataset.id
   let product = cart.find(item => item.id === id)
 
