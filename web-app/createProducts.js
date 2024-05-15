@@ -26,6 +26,7 @@ const filters = {
 document.addEventListener('DOMContentLoaded', function () {
 
     isAvailable.checked = true
+    render('byCreated', 'products')
     // products = showDataProducts()
     // renderProducts(products, filters)
 
@@ -34,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
 // Event get sort
 sort.addEventListener('change', e => {
 
-    filters.sortBy = e.target.value
+    const sortBy = e.target.value
+    render(sortBy, 'products')
+    // filters.sortBy = e.target.value
     // renderProducts(products, filters)
 
 })
@@ -49,10 +52,9 @@ formData.addEventListener('submit', e => {
     const price = e.target.elements.inputPrice.value.trim()
 
     createProduct(name, price, 1, isChecked, 'products' )
-    // addProduct(products, newProduct, productPrice, isChecked)
+    render('byEdited', 'products')
     e.target.elements.inputTitle.value = ''
-    // saveProducts(products)
-    // renderProducts(products, filters)
+    e.target.elements.inputPrice.value = ''
 
 })
 

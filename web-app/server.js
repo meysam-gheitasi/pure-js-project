@@ -1,24 +1,24 @@
-const express = require('express');
+const http = require('http');
 const fs = require('fs');
-const app = express();
-const port = 5500;
 
-app.use(express.json());
-
-app.post('/products', (req, res) => {
-    const data = req.body;
-
-    fs.writeFile('products.json', JSON.stringify(data), (err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error saving data');
-        } else {
-            console.log('Data saved successfully');
-            res.status(200).send('Data saved successfully');
-        }
-    });
+const server = http.createServer((req, res) => {
+    if (req.method === 'POST' && req.url === '/products') {
+        let body = '';
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+        req.on('end', () => {
+            fs.appendFileSync('./products.json', body);
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end('Data added to products.json');
+        });
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
+    }
 });
 
-app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:5500`);
+const PORT = 5500;
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

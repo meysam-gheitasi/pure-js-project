@@ -1,7 +1,7 @@
 // create  date with moment package js
 const timestamp = () => {
 
-    let time = oment().valueOf()
+    let time = moment().valueOf()
     return time
 }
 // create new id by uuid package js
@@ -28,8 +28,9 @@ const removeAllChildren = (element) => {
     }
 }
 // remove a data with ID
-const remove = (id, key, value) => {
+const remove = (id, key) => {
 
+    let value = getData(key)
     value = value.filter(item => item.id !== id)
     saveData(key, value)
 }
@@ -65,42 +66,39 @@ const changeAmount = (item, type, key, value) => {
 }
 
 // change exist product
-const existChange = (item, key, value) => {
+const changeExist = (id, isChecked, key) => {
 
-    item.addEventListener('change', e => {
-        const isChecked = e.target.checked
-        let index = value.indexOf(product);
-        if (index !== -1) {
-            value[index].exist = isChecked;
-            saveData(key, value)
-        }
-    })
+    const value = getData(key)
+    let product = value.find(item => item.id === id)
+    product.exist = isChecked
+    saveData(key, value)
 }
 // create event delete or change amount product
-const eventDeleteOrChangeAmountOrExist = (element, classElement, key, value) => {
+const eventDeleteOrChangeAmountOrExist = (element, classElement, key) => {
+
+    const value = getData(key)
 
     element.addEventListener('click', e => {
 
+        const id = e.target.dataset.id
+
         if (e.target.classList.contains(classElement)) {
-
-            let item = e.target
-            let id = item.dataset.id
-
-            element.removeChild(item.parentElement.parentElement)
-            remove(id, key, value)
+            const parentDiv = e.target.closest('div')
+            parentDiv.remove()
+            remove(id, key)
         }
+        e.target.classList.contains('exist-item') && changeExist(id, e.target.checked, key)
 
         e.target.classList.contains('fa-chevron-up') && changeAmount(e.target, 'increase')
 
         e.target.classList.contains('fa-chevron-down') && changeAmount(e.target, 'decrease')
-
-        e.target.classList.contains('exist-item') && existChange(e.target, key, value)
     })
 }
 // create new product with push in array and save to local storage and post to json file
 const createProduct = (name, price, amount, check, key) => {
 
     const id = createID()
+    const time = timestamp()
     let value = getData(key)
     value.push({
         id: id,
@@ -108,60 +106,63 @@ const createProduct = (name, price, amount, check, key) => {
         price: price,
         amount: amount,
         exist: check,
-        created: timestamp,
-        updated: timestamp
+        created: time,
+        updated: time
     })
     saveData(key, value)
-    postData(value)
+    render('byCreated', 'products')
+    // postData(value)
 }
 // post json to save in json file
-const postData = async (value) => {
-    console.log(value);
+// const postData = async (value) => {
+//     console.log(value);
 
-    const jsonData = JSON.stringify(value.map((item) => {
-        return {
-            sys: { id: item.id },
-            fields: {
-                title: item.name,
-                price: parseFloat(item.price),
-                created: item.created,
-                updated: item.updated,
-                image: { fields: { file: { url: './images/product-1.jpg' } } }
-            }
-        };
-    }));
+//     const jsonData = JSON.stringify(value.map((item) => {
+//         return {
+//             sys: { id: item.id },
+//             fields: {
+//                 title: item.name,
+//                 price: parseFloat(item.price),
+//                 created: item.created,
+//                 updated: item.updated,
+//                 image: { fields: { file: { url: './images/product-1.jpg' } } }
+//             }
+//         };
+//     }));
 
-    try {
-        const respons = await fetch('http://localhost:5500/web-app/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: jsonData
-        })
-        // for test this method
-        const data = await respons.json()
-        console.log('Send data success.');
-        return data
-    } catch (error) {
-        console.log('Error is:', error)
-        throw error;
-    }
-}
+//     try {
+//         const respons = await fetch('http://127.0.0.1:5500/products.json', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: jsonData
+//         })
+//         if (!respons.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+
+//         console.log('Data sent successfully');
+//         return true;
+//     } catch (error) {
+//         console.error('There was a problem with your fetch operation:', error.message);
+//         return false;
+//     }
+// }
 // sort data
 const sortProducts = (sortBy, value) => {
 
-    const compareFunction = (a, b) => {
-        if (a[sortBy] > b[sortBy]) {
+     const compareFunction = (a, b) => {
+        if (a.sortBy > b.sortBy) {
             return -1;
-        } else if (a[sortBy] < b[sortBy]) {
+        } else if (a.sortBy < b.sortBy) {
             return 1;
         } else {
             return 0;
         }
     };
 
-    if (sortBy === 'byEdited' || sortBy === 'byCreated') {
+    if (sortBy === 'byEdited' || sortBy === 'byCreated' || sortBy === 'byPrice') {
         return value.sort(compareFunction);
     } else {
         return value;
@@ -183,19 +184,19 @@ const cheangeExist = (value, product, check) => {
 const createElement = element => {
     return document.createElement(element)
 }
-const render = (sortBy, key, value) => {
+const render = (sortBy, key) => {
 
-    const showProducts =  document.querySelector('#show-products')
-    
+    let value = getData(key)
+
+    const showProducts = document.querySelector('#show-products')
+    showProducts.innerHTML = ''
+
     value = sortProducts(sortBy, value)
-    let elements =value.map(item => createElements(item))
+    value.forEach(item => showProducts.appendChild(createElements(item)))
 
-    showProducts.appendChild(elements)
-
-    eventDeleteOrChangeAmountOrExist(showProducts, 'delete-btn', key, value)
-
+    eventDeleteOrChangeAmountOrExist(showProducts, 'delete-btn', key)
 }
-
+// create elements with parent // use methode in loop array
 const createElements = (item) => {
 
     const nameEl = createElement('h4')
@@ -205,7 +206,7 @@ const createElements = (item) => {
     priceEl.textContent = `${item.price}$`
 
     const amountEl = createElement('h4')
-    nameEl.textContent = `amount:${item.amount}`
+    amountEl.textContent = `amount:${item.amount}`
 
     const aEl = createElement('a')
     aEl.setAttribute('href', `./productSingle.html#${item.id}`)
@@ -213,7 +214,7 @@ const createElements = (item) => {
 
     const existEl = createElement("input");
     existEl.setAttribute('data-id', item.id)
-    btnEl.classList.add('exist-item')
+    existEl.classList.add('exist-item')
     existEl.setAttribute("type", "checkbox");
     existEl.checked = item.exist
 
@@ -227,3 +228,6 @@ const createElements = (item) => {
 
     return container
 }
+
+
+// searcch /// sort //// single edite product
