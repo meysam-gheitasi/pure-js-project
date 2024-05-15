@@ -26,8 +26,8 @@ const filters = {
 document.addEventListener('DOMContentLoaded', function () {
 
     isAvailable.checked = true
-    products = showDataProducts()
-    renderProducts(products, filters)
+    // products = showDataProducts()
+    // renderProducts(products, filters)
 
 })
 
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 sort.addEventListener('change', e => {
 
     filters.sortBy = e.target.value
-    renderProducts(products, filters)
+    // renderProducts(products, filters)
 
 })
 
@@ -43,13 +43,16 @@ sort.addEventListener('change', e => {
 formData.addEventListener('submit', e => {
 
     e.preventDefault()
-    const newProduct = e.target.elements.inputTitle.value.trim()
+
+    const name = e.target.elements.inputTitle.value.trim()
     const isChecked = e.target.elements.isAvailable.checked
-    const productPrice = e.target.elements.inputPrice.value.trim()
-    addProduct(products, newProduct, productPrice, isChecked)
+    const price = e.target.elements.inputPrice.value.trim()
+
+    createProduct(name, price, 1, isChecked, 'products' )
+    // addProduct(products, newProduct, productPrice, isChecked)
     e.target.elements.inputTitle.value = ''
-    saveProducts(products)
-    renderProducts(products, filters)
+    // saveProducts(products)
+    // renderProducts(products, filters)
 
 })
 
@@ -57,10 +60,10 @@ formData.addEventListener('submit', e => {
 searchInput.addEventListener('input', e => {
 
     if (!e.target.value.trim().length) {
-        renderProducts(products, filters)
+        // renderProducts(products, filters)
     } else {
         product = e.target.value.trim().toLowerCase()
-        searchProducts(product)
+        // searchProducts(product)
     }
 
 })
@@ -69,7 +72,7 @@ searchInput.addEventListener('input', e => {
 isAvailable.addEventListener('change', e => {
 
     filters.availabaleProducts = e.target.checked
-    availabaleProducts(products, filters.availabaleProducts)
+    // availabaleProducts(products, filters.availabaleProducts)
 
 })
 
@@ -78,7 +81,7 @@ window.addEventListener('storage', e => {
     
     if (e.key === 'products') {
         products = JSON.parse(e.newValue)
-        renderProducts(products, filters)
+        // renderProducts(products, filters)
     }
 
 })

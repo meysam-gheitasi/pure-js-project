@@ -98,22 +98,25 @@ const eventDeleteOrChangeAmountOrExist = (element, classElement, key, value) => 
     })
 }
 // create new product with push in array and save to local storage and post to json file
-const createProduct = (name, price, check, key, value) => {
+const createProduct = (name, price, amount, check, key) => {
 
     const id = createID()
+    let value = getData(key)
     value.push({
         id: id,
         title: name,
         price: price,
+        amount: amount,
         exist: check,
-        created: timestamp(),
-        updated: timestamp()
+        created: timestamp,
+        updated: timestamp
     })
     saveData(key, value)
     postData(value)
 }
 // post json to save in json file
 const postData = async (value) => {
+    console.log(value);
 
     const jsonData = JSON.stringify(value.map((item) => {
         return {
@@ -129,7 +132,7 @@ const postData = async (value) => {
     }));
 
     try {
-        const respons = await fetch('products.json', {
+        const respons = await fetch('http://localhost:5500/web-app/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
