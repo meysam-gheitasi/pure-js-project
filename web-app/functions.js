@@ -30,10 +30,11 @@ const addProduct = (products, product, price, isChecked) => {
     })
 }
 
-// Render products
+// Render products //check code with ai...
 const renderProducts = (products, filters) => {
 
     products = sortProducts(products, filters.sortBy)
+    
     document.querySelector('#show-products').innerHTML = ''
     products.forEach(item => {
         document.querySelector('#show-products').appendChild(createElementDOM(products, item))

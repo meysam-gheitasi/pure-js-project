@@ -21,14 +21,14 @@ const saveData = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
 // remove children HTML
-const removeChildren = (element) => {
+const removeAllChildren = (element) => {
 
     while (element.children.length > 0) {
         element.removeChild(element.children[0])
     }
 }
 // remove a data with ID
-const remove = (key, value, id) => {
+const remove = (id, key, value) => {
 
     value = value.filter(item => item.id !== id)
     saveData(key, value)
@@ -37,7 +37,7 @@ const remove = (key, value, id) => {
 const removeAllData = (key, value) => {
 
     const dataId = value.map(item => item.id)
-    dataId.forEach(item => remove(key, value, item))
+    dataId.forEach(item => remove(item, key, value))
 }
 // get a data as local storag by Id
 const getById = (key, id) => {
@@ -58,28 +58,43 @@ const changeAmount = (item, type, key, value) => {
         product.amount -= 1
         item.previousElementSibling.innerText = product.amount
     } else {
-        removeChildren(cartContent)
-        remove = (key, value, id)
+        removeAllChildren(cartContent)
+        remove = (id, key, value)
     }
     saveData(key, value)
 }
+
+// change exist product
+const existChange = (item, key, value) => {
+
+    item.addEventListener('change', e => {
+        const isChecked = e.target.checked
+        let index = value.indexOf(product);
+        if (index !== -1) {
+            value[index].exist = isChecked;
+            saveData(key, value)
+        }
+    })
+}
 // create event delete or change amount product
-const eventDeleteOrChangeAmount = (element, eventName, key, value) => {
+const eventDeleteOrChangeAmountOrExist = (element, classElement, key, value) => {
 
-    element.addEventListener(eventName, e => {
+    element.addEventListener('click', e => {
 
-        if (e.target.classList.contains('remove-item')) {
+        if (e.target.classList.contains(classElement)) {
 
             let item = e.target
             let id = item.dataset.id
 
-            removeChildren(element)
-            remove(key, value, id)
+            element.removeChild(item.parentElement.parentElement)
+            remove(id, key, value)
         }
 
         e.target.classList.contains('fa-chevron-up') && changeAmount(e.target, 'increase')
 
         e.target.classList.contains('fa-chevron-down') && changeAmount(e.target, 'decrease')
+
+        e.target.classList.contains('exist-item') && existChange(e.target, key, value)
     })
 }
 // create new product with push in array and save to local storage and post to json file
@@ -131,9 +146,9 @@ const postData = async (value) => {
     }
 }
 // sort data
-const sortProducts = (value, sortBy) => {
+const sortProducts = (sortBy, value) => {
 
-     const compareFunction = (a, b) => {
+    const compareFunction = (a, b) => {
         if (a[sortBy] > b[sortBy]) {
             return -1;
         } else if (a[sortBy] < b[sortBy]) {
@@ -161,4 +176,51 @@ const cheangeExist = (value, product, check) => {
         return true
     }
     return false
+}
+const createElement = element => {
+    return document.createElement(element)
+}
+const render = (sortBy, key, value) => {
+
+    const showProducts =  document.querySelector('#show-products')
+    
+    value = sortProducts(sortBy, value)
+    let elements =value.map(item => createElements(item))
+
+    showProducts.appendChild(elements)
+
+    eventDeleteOrChangeAmountOrExist(showProducts, 'delete-btn', key, value)
+
+}
+
+const createElements = (item) => {
+
+    const nameEl = createElement('h4')
+    nameEl.textContent = item.title
+
+    const priceEl = createElement('h4')
+    priceEl.textContent = `${item.price}$`
+
+    const amountEl = createElement('h4')
+    nameEl.textContent = `amount:${item.amount}`
+
+    const aEl = createElement('a')
+    aEl.setAttribute('href', `./productSingle.html#${item.id}`)
+    aEl.append(nameEl, priceEl)
+
+    const existEl = createElement("input");
+    existEl.setAttribute('data-id', item.id)
+    btnEl.classList.add('exist-item')
+    existEl.setAttribute("type", "checkbox");
+    existEl.checked = item.exist
+
+    const btnEl = createElement("button")
+    btnEl.setAttribute('data-id', item.id)
+    btnEl.classList.add('delete-btn')
+    btnEl.textContent = 'Delete'
+
+    const container = document.createElement('div');
+    container.append(aEl, existEl, btnEl)
+
+    return container
 }
