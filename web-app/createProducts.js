@@ -12,21 +12,11 @@ const searchInput = document.querySelector('#input-search')
 const isAvailable = document.querySelector('#is-available')
 const sort = document.querySelector('#sort')
 
-
-// const filters = {
-//     searchItem: '',
-//     availabaleProducts: false,
-//     sortBy: 'byEdited'
-// }
-
-
 // Event after dom loaded
 document.addEventListener('DOMContentLoaded', function () {
 
     isAvailable.checked = true
     render('byCreated', 'products')
-    // products = showDataProducts()
-    // renderProducts(products, filters)
 })
 
 // Event get sort
@@ -34,8 +24,6 @@ sort.addEventListener('change', e => {
 
     const sortBy = e.target.value
     render(sortBy, 'products')
-    // filters.sortBy = e.target.value
-    // renderProducts(products, filters)
 })
 
 // Event Submit form // get data product
@@ -63,13 +51,11 @@ searchInput.addEventListener('input', e => {
         product = e.target.value.trim().toLowerCase()
         console.log(product);
         searchName(product, 'products')
-        // searchProducts(product)
     }
 })
 
 // Event show availabale product And import this product is availbale
 isAvailable.addEventListener('change', e => {
-
     filters.availabaleProducts = e.target.checked
 })
 
