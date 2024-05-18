@@ -2,22 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/createProducts.css" />
     <title>Document</title>
   </head>
   <body>
-    <div class="">
-      <h1>Product Page:</h1>
-        <input type="text" id="productTitle" placeholder="Product title" />
-        <input type="text" id="productPrice" placeholder="Product price" />
+    <nav class="navbar">
+      <div class="navbar-center">
+        <div class="cart-btn"></div>
+        <div>
+          <span>Admin</span>
+          <i class="fas fa-gem"></i>
+        </div>
+      </div>
+    </nav>
+
+    <div class="section-edit-products">
+      <div class="section-edit-products-contaienr">
+        <input
+        type="text"
+        id="productTitle"
+        placeholder="Product title"
+        required
+      />
+      <input
+        type="text"
+        id="productPrice"
+        type="number"
+        placeholder="Product price"
+        required
+      />
+      <span class="edit-products-details">
         <span id="last-edit"></span>
-        <input type="checkbox" id="productExist" name="productAvaibale"/>
-      <a href="./index.html">Home</a>
+       <div>
+        <label for="isAvailable">Exist Product:</label>
+        <input type="checkbox" id="productExist" name="productAvaibale" />
+       </div>
+      </span>
+      <span>
+        <a class="btn" href="./index.html">Home</a>
+        <button class="btn" id="deleteProduct">Delete Product</button>
+      </span>
+      </div>
     </div>
 
     <script src="moment.js"></script>
     <script src="jalali-moment.js"></script>
-     <script src="CRAD.js"></script>
+    <script src="CRAD.js"></script>
     <script src="productSingle.js"></script>
   </body>
 </html>
