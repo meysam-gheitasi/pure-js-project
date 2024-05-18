@@ -22,14 +22,13 @@ const filters = {
 }
 
 
-// Event dom loaded
+// Event after dom loaded
 document.addEventListener('DOMContentLoaded', function () {
 
     isAvailable.checked = true
     render('byCreated', 'products')
     // products = showDataProducts()
     // renderProducts(products, filters)
-
 })
 
 // Event get sort
@@ -39,10 +38,9 @@ sort.addEventListener('change', e => {
     render(sortBy, 'products')
     // filters.sortBy = e.target.value
     // renderProducts(products, filters)
-
 })
 
-// Event Submitform save a Product
+// Event Submit form // get data product
 formData.addEventListener('submit', e => {
 
     e.preventDefault()
@@ -58,16 +56,17 @@ formData.addEventListener('submit', e => {
 
 })
 
-// Event input for search product
+// Event input search to products name
 searchInput.addEventListener('input', e => {
 
     if (!e.target.value.trim().length) {
-        // renderProducts(products, filters)
+        render('byCreate', 'products')
     } else {
         product = e.target.value.trim().toLowerCase()
+        console.log(product);
+        searchName(product, 'products')
         // searchProducts(product)
     }
-
 })
 
 // Event show availabale product And import this product is availbale

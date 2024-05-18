@@ -152,7 +152,7 @@ const createProduct = (name, price, amount, check, key) => {
 // sort data
 const sortProducts = (sortBy, value) => {
 
-     const compareFunction = (a, b) => {
+    const compareFunction = (a, b) => {
         if (a.sortBy > b.sortBy) {
             return -1;
         } else if (a.sortBy < b.sortBy) {
@@ -228,6 +228,16 @@ const createElements = (item) => {
 
     return container
 }
+// search to products name data
+const searchName = (title, key) => {
+
+    const value = getData(key)
+    let searchData = value.filter(item => item.title.toLowerCase().includes(title))
+   if(searchData.length) {
+    saveData('searchData', searchData)
+    render('byCreate', 'searchData')
+   }
+}
 
 
-// searcch /// sort //// single edite product
+/// sort //// single edite product
