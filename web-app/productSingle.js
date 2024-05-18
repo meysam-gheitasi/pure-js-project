@@ -3,6 +3,7 @@ const titleEl = document.querySelector("#productTitle")
 const priceEl = document.querySelector("#productPrice")
 const existEl = document.querySelector("#productExist")
 const dateEl = document.querySelector("#last-edit")
+const deleteEl = document.querySelector("#deleteProduct")
 
 // get id product of URL
 const productId = location.hash.substring(1)
@@ -32,6 +33,12 @@ priceEl.addEventListener('input', e => {
 existEl.addEventListener('change', e => {
     result.exist = e.target.checked
     dataToUpdateById(result, dateEl, 'products')
+})
+
+// delete product and redairect to create product page
+deleteEl.addEventListener('click', ()=> {
+    remove(productId, 'products')
+    location.assign('./createProducts.html')
 })
 
 // Real-time display

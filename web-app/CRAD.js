@@ -57,7 +57,7 @@ const removeAllChildren = (element) => {
         element.removeChild(element.children[0])
     }
 }
-// remove a data with ID
+// remove and save data with ID
 const remove = (id, key) => {
 
     let value = getData(key)
