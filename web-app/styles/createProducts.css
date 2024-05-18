@@ -257,9 +257,9 @@ input[type="checkbox"] {
     justify-content: center;
 }
 a:hover {
-    color: var(--secondary);
+    color: var(--input-border);
 }
 button:hover {
-    color: var(--secondary);
+    color: var(--input-border);
 }
 
