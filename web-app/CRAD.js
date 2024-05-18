@@ -24,6 +24,7 @@ const getData = (key) => {
 const saveData = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
+// import update product by id
 const updateById = (product, key) => {
 
     let value = getData(key)
