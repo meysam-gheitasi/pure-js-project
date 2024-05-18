@@ -12,14 +12,12 @@ const searchInput = document.querySelector('#input-search')
 const isAvailable = document.querySelector('#is-available')
 const sort = document.querySelector('#sort')
 
-// Product data
-let products = []
-let product = []
-const filters = {
-    searchItem: '',
-    availabaleProducts: false,
-    sortBy: 'byEdited'
-}
+
+// const filters = {
+//     searchItem: '',
+//     availabaleProducts: false,
+//     sortBy: 'byEdited'
+// }
 
 
 // Event after dom loaded
@@ -73,16 +71,14 @@ searchInput.addEventListener('input', e => {
 isAvailable.addEventListener('change', e => {
 
     filters.availabaleProducts = e.target.checked
-    // availabaleProducts(products, filters.availabaleProducts)
-
 })
 
 // Real-time display
 window.addEventListener('storage', e => {
-    
-    if (e.key === 'products') {
-        products = JSON.parse(e.newValue)
-        // renderProducts(products, filters)
-    }
 
+    if (e.key === 'products') {
+        const products = JSON.parse(e.newValue)
+        saveData('products', products)
+        render('byCreated', 'products')
+    }
 })
