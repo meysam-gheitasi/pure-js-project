@@ -261,6 +261,25 @@ const searchName = (title, key) => {
         render('byCreate', 'searchData')
     }
 }
+// helper function to function displayValues
+const updateElementValue = (element, value) => {
 
-//// single edite product
+    if (element instanceof HTMLInputElement) {
+        element.type === 'checkbox'
+            ?
+            element.checked = value
+            :
+            element.value = value
+    } else {
+        element.textContent = value
+    }
+}
+// function to display product values
+const displayValues = (result) => {
+
+    updateElementValue(titleEl, result.title)
+    updateElementValue(priceEl, result.price)
+    updateElementValue(existEl, result.exist)
+    updateElementValue(dateEl, lastEditeMessage(result.updated))
+}
 /// sort

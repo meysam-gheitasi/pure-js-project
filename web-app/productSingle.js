@@ -1,54 +1,52 @@
-const productTitle = document.querySelector("#productTitle")
-const productPrice = document.querySelector("#productPrice")
+// recevie elements in DOM
+const titleEl = document.querySelector("#productTitle")
+const priceEl = document.querySelector("#productPrice")
+const existEl = document.querySelector("#productExist")
 const dateEl = document.querySelector("#last-edit")
 
-let productId = location.hash.substring(1)
-const result =  getById(productId, 'products')
+// get id product of URL
+const productId = location.hash.substring(1)
 
-console.log(result);
+// find product by id within products
+let result = getById(productId, 'products')
 
-productTitle.value = result.title
-productPrice.value = result.price
-dateEl.textContent = lastEditeMessage(result.updated)
+// cheking existence of result
+!result && location.assign('./createProducts.html')
 
-// // Gete updat value
-productTitle.addEventListener('input', e => {
+// call function to display product value
+displayValues(result)
 
+// show and get new values title of product
+titleEl.addEventListener('input', e => {
     result.title = e.target.value.trim()
     dataToUpdateById(result, dateEl, 'products')
 })
 
-productPrice.addEventListener('input', e => {
-
+// show and get new values price of product
+priceEl.addEventListener('input', e => {
     result.price = e.target.value.trim()
     dataToUpdateById(result, dateEl, 'products')
 })
 
+// show and get new values staus of product
+existEl.addEventListener('change', e => {
+    result.exist = e.target.checked
+    dataToUpdateById(result, dateEl, 'products')
+})
 
-// if (productPage === undefined) {
-//     location.assign('./index.html')
-// }
+// Real-time display
+window.addEventListener('storage', e => {
 
-// // const productAvaibale = e.target.elements.productAvaibale.checked
-// // if (!productAvaibale) {
-// //     const newProductsPage = productsPage.filter(item => item.id != productPage.id)
-// //     console.log(newProductsPage);
-// //     saveProducts(newProductsPage)
-// //     location.assign('./index.html')
+    if (e.key === 'products') {
+        const products = JSON.parse(e.newValue)
+        saveData('products', products)
 
-// // }
+        result = getById(productId, 'products')
 
-// // Real-time display
-// window.addEventListener('storage', e => {
+        !result && location.assign('./createProducts.html')
 
-//     if (e.key === 'products') {
-//         productsPage = JSON.parse(e.newValue)
-//         productPage = findProductbyId(productId)
-   
-//         productTitle.value = productPage.title
-//         productPrice.value = productPage.price
-//         dateEl.textContent = lastEditeMessage(productPage.updated)
+        displayValues(result)
 
-//     }
-// })
+    }
+})
 
