@@ -4,6 +4,10 @@ const timestamp = () => {
     let time = moment().valueOf()
     return time
 }
+// show last edite
+const lastEditeMessage = (timestamp) => {
+    return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
+}
 // create new id by uuid package js
 const createID = () => {
     const id = uuid()
@@ -19,6 +23,31 @@ const getData = (key) => {
 // save data to localstorage
 const saveData = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value))
+}
+const updateById = (product, key) => {
+
+    let value = getData(key)
+    const itemIndex = value.findIndex(item => item.id === product.id)
+
+    if (itemIndex !== -1) {
+        value[itemIndex] = {
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            amount: product.amount,
+            exist: product.check,
+            created: product.time,
+            updated: product.time
+        }
+        saveData(key, value)
+    }
+    return
+}
+const dataToUpdateById = (product, elUpdateTime, key) => {
+
+    product.updated = timestamp()
+    updateById(product, key)
+    elUpdateTime.textContent = lastEditeMessage(result.updated)
 }
 // remove children HTML
 const removeAllChildren = (element) => {
@@ -41,8 +70,7 @@ const removeAllData = (key, value) => {
     dataId.forEach(item => remove(item, key, value))
 }
 // get a data as local storag by Id
-const getById = (key, id) => {
-
+const getById = (id, key) => {
     let data = JSON.parse(localStorage.getItem(key))
     return data.find(item => item.id === id)
 }
@@ -64,7 +92,6 @@ const changeAmount = (item, type, key, value) => {
     }
     saveData(key, value)
 }
-
 // change exist product
 const changeExist = (id, isChecked, key) => {
 
@@ -168,10 +195,6 @@ const sortProducts = (sortBy, value) => {
         return value;
     }
 }
-// show last edite
-const lastEditeMessage = (timestamp) => {
-    return `Last Edit: ${moment(timestamp).locale('fa').fromNow()}`
-}
 // change exist product with indexOf return true and false
 const cheangeExist = (value, product, check) => {
     let index = value.indexOf(product);
@@ -209,7 +232,7 @@ const createElements = (item) => {
     amountEl.textContent = `amount:${item.amount}`
 
     const aEl = createElement('a')
-    aEl.setAttribute('href', `./productSingle.html#${item.id}`)
+    aEl.setAttribute('href', `./editedProducts.html#${item.id}`)
     aEl.append(nameEl, priceEl)
 
     const existEl = createElement("input");
@@ -233,11 +256,11 @@ const searchName = (title, key) => {
 
     const value = getData(key)
     let searchData = value.filter(item => item.title.toLowerCase().includes(title))
-   if(searchData.length) {
-    saveData('searchData', searchData)
-    render('byCreate', 'searchData')
-   }
+    if (searchData.length) {
+        saveData('searchData', searchData)
+        render('byCreate', 'searchData')
+    }
 }
 
-
-/// sort //// single edite product
+//// single edite product
+/// sort
