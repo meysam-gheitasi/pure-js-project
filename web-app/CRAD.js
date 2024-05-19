@@ -134,6 +134,7 @@ const createProduct = (name, price, amount, check, key) => {
         price: price,
         amount: amount,
         exist: check,
+        image: './images/product-1.jpg',
         created: time,
         updated: time
     })

@@ -16,33 +16,9 @@ const removeItemBtn = document.querySelector('.remove-item')
 
 let cart = []
 
-const getData = async () => {
-
-  try {
-
-    const result = await fetch('products.json')
-    const data = await result.json()
-    let products = data.items
-
-    products = products.map(item => {
-
-      const { id } = item.sys
-      const { title, price } = item.fields
-      const image = item.fields.image.fields.file.url
-
-      return { id, title, price, image }
-    })
-
-    return products
-
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 // display Products mehtods :
 
-const displayProducts = products => {
+const displayProducts = (products) => {
 
   let result = ''
 
@@ -76,15 +52,19 @@ const getCardbuttons = () => {
     item.addEventListener('click', e => {
 
       let id = e.target.dataset.id
-      let cartItem = { ...getProducts(id), amount: 1 }
-      cart = [...cart, cartItem]
-      addCartItem(cartItem)
-      setCartValues(cart)
+      let cartItem = cart.find(item => item.id === id)
+
+      if (cartItem) {
+        cartItem.amount += 1
+      } else {
+        cart = [...cart, getProducts(id)]
+      }
       saveCart(cart)
-
+      setCartValues(cart)
+      addCartItem(cart)
     })
-
   })
+
 }
 
 const setCartValues = cart => {
@@ -102,12 +82,13 @@ const setCartValues = cart => {
 
 }
 
-const addCartItem = item => {
+const addCartItem = cart => {
 
   const div = document.createElement('div')
   div.classList.add('cart-item')
-
-  div.innerHTML = `
+  cartContent.innerHTML = ''
+  cart.forEach(item => {
+    div.innerHTML += `
       <img src=${item.image} alt=${item.title} />
       <div>
         <h4>${item.title}</h4>
@@ -121,8 +102,8 @@ const addCartItem = item => {
       </div>
     `
 
+  })
   cartContent.appendChild(div)
-
 }
 
 const showCart = () => {
@@ -145,19 +126,16 @@ closeButton.addEventListener('click', closeCart)
 
 const initApp = () => {
 
+  const products = getData('products')
   cart = getCart()
+
+  displayProducts(products)
+  getCardbuttons()
+  cartProcess()
   setCartValues(cart)
-  populate(cart)
-
+  addCartItem(cart)
 }
 
-const populate = (cart) => {
-
-  cart.forEach(item => {
-    return addCartItem(item)
-  })
-
-}
 
 const cartProcess = () => {
 
@@ -231,13 +209,20 @@ const changeAmount = (item, type) => {
 
 const saveProducts = products => {
 
-  localStorage.setItem('productsData', JSON.stringify(products))
+  localStorage.setItem('products', JSON.stringify(products))
 
 }
 const saveCart = cart => {
 
   localStorage.setItem('cart', JSON.stringify(cart))
 
+}
+// get cart as localStorage or return empty array
+const getData = key => {
+
+  return localStorage.getItem(key)
+    ? JSON.parse(localStorage.getItem(key))
+    : []
 }
 const getCart = () => {
 
@@ -249,7 +234,7 @@ const getCart = () => {
 
 const getProducts = id => {
 
-  let products = JSON.parse(localStorage.getItem('productsData'))
+  let products = JSON.parse(localStorage.getItem('products'))
   return products.find(item => item.id === id)
 
 }
@@ -258,13 +243,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initApp()
 
-  getData().then(data => {
-    displayProducts(data)
-    saveProducts(data)
-  })
-    .then(() => {
-      getCardbuttons()
-      cartProcess()
-    })
 
 })
