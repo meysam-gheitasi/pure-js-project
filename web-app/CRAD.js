@@ -140,63 +140,37 @@ const createProduct = (name, price, amount, check, key) => {
     })
     saveData(key, value)
     render('byCreated', 'products')
-    // postData(value)
 }
-// post json to save in json file
-// const postData = async (value) => {
-//     console.log(value);
 
-//     const jsonData = JSON.stringify(value.map((item) => {
-//         return {
-//             sys: { id: item.id },
-//             fields: {
-//                 title: item.name,
-//                 price: parseFloat(item.price),
-//                 created: item.created,
-//                 updated: item.updated,
-//                 image: { fields: { file: { url: './images/product-1.jpg' } } }
-//             }
-//         };
-//     }));
-
-//     try {
-//         const respons = await fetch('http://127.0.0.1:5500/products.json', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: jsonData
-//         })
-//         if (!respons.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-
-//         console.log('Data sent successfully');
-//         return true;
-//     } catch (error) {
-//         console.error('There was a problem with your fetch operation:', error.message);
-//         return false;
-//     }
-// }
 // sort data
 const sortProducts = (sortBy, value) => {
 
-    const compareFunction = (a, b) => {
-        if (a.sortBy > b.sortBy) {
-            return -1;
-        } else if (a.sortBy < b.sortBy) {
-            return 1;
-        } else {
-            return 0;
-        }
-    };
-
-    if (sortBy === 'byEdited' || sortBy === 'byCreated' || sortBy === 'byPrice') {
-        return value.sort(compareFunction);
+    if (sortBy === 'byEdited') {
+        return value.sort((a, b) => {
+            if (a.updated > b.updated) {
+                return -1
+            } else if (a.updated < b.updated) {
+                return 1
+            } else {
+                return 0
+            }
+        })
+    } else if (sortBy === 'byCreated') {
+        return value.sort((a, b) => {
+            if(a.created > b.created) {
+                return -1
+            } else if(a.created < b.created) {
+                return 1
+            } else {
+                return 0
+            }
+        })
     } else {
-        return value;
+        return value
     }
+   
 }
+
 // change exist product with indexOf return true and false
 const cheangeExist = (value, product, check) => {
     let index = value.indexOf(product);

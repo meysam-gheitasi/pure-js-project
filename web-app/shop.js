@@ -23,7 +23,8 @@ const displayProducts = (products) => {
   let result = ''
 
   products.forEach(item => {
-    result += `
+    if(item.exist) {
+      result += `
     <article class="product">
       <div class="img-container">
         <img
@@ -37,6 +38,7 @@ const displayProducts = (products) => {
       <h4>${item.price}</h4>
     </article>
     `
+    }
   })
 
   productsDOM.innerHTML = result
@@ -128,7 +130,6 @@ const initApp = () => {
 
   const products = getData('products')
   cart = getCart()
-
   displayProducts(products)
   getCardbuttons()
   cartProcess()

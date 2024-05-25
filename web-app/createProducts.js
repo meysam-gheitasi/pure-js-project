@@ -1,27 +1,19 @@
-// window.addEventListener('storage', e => {
-//     if(e.key === 'products') {
-//         products = JSON.parse(e.newValue)
-//     }
-// })
-
 
 // QuerySelectorS to get Elements in Dom
 const showProducts = document.querySelector('#show-products')
 const formData = document.querySelector('#form-data')
 const searchInput = document.querySelector('#input-search')
 const isAvailable = document.querySelector('#is-available')
-const sort = document.querySelector('#sort')
+const sort = document.querySelector('#sortProduct')
 
 // Event after dom loaded
 document.addEventListener('DOMContentLoaded', function () {
-
     isAvailable.checked = true
     render('byCreated', 'products')
 })
 
 // Event get sort
 sort.addEventListener('change', e => {
-
     const sortBy = e.target.value
     render(sortBy, 'products')
 })
