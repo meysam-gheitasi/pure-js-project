@@ -183,11 +183,11 @@ const createElement = element => {
 const render = (sortBy, key) => {
 
     let value = getData(key)
+    value = sortProducts(sortBy, value)
 
     const showProducts = document.querySelector('#show-products')
     showProducts.innerHTML = ''
 
-    value = sortProducts(sortBy, value)
     value.forEach(item => showProducts.appendChild(createElements(item)))
 
     eventDeleteOrChangeAmountOrExist(showProducts, 'delete-btn', key)
