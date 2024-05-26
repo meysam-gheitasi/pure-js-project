@@ -159,7 +159,7 @@ input {
     font-size: 2.5rem;
 }
 
-#sort {
+#sortProduct {
     color: var(--text-body);
     border-radius: 4px;
     border-color: transparent transparent #fff transparent;
