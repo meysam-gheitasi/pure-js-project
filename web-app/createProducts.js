@@ -28,7 +28,7 @@ formData.addEventListener('submit', e => {
     const price = e.target.elements.inputPrice.value.trim()
 
     createProduct(name, price, 1, isChecked, 'products' )
-    render('byEdited', 'products')
+    render('byCreated', 'products')
     e.target.elements.inputTitle.value = ''
     e.target.elements.inputPrice.value = ''
 

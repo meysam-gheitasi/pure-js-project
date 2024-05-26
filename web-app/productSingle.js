@@ -20,19 +20,19 @@ displayValues(result)
 // show and get new values title of product
 titleEl.addEventListener('input', e => {
     result.title = e.target.value.trim()
-    dataToUpdateById(result, dateEl, 'products')
+    updateById(result, dateEl, 'products')
 })
 
 // show and get new values price of product
 priceEl.addEventListener('input', e => {
     result.price = e.target.value.trim()
-    dataToUpdateById(result, dateEl, 'products')
+    updateById(result, dateEl, 'products')
 })
 
 // show and get new values staus of product
 existEl.addEventListener('change', e => {
     result.exist = e.target.checked
-    dataToUpdateById(result, dateEl, 'products')
+    updateById(result, dateEl, 'products')
 })
 
 // delete product and redairect to create product page

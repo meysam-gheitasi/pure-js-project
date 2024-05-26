@@ -25,7 +25,9 @@ const saveData = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
 // import update product by id
-const updateById = (product, key) => {
+const updateById = (product, elUpdateTime, key) => {
+
+    product.updated = timestamp()
 
     let value = getData(key)
     const itemIndex = value.findIndex(item => item.id === product.id)
@@ -36,19 +38,14 @@ const updateById = (product, key) => {
             title: product.title,
             price: product.price,
             amount: product.amount,
-            exist: product.check,
-            created: product.time,
-            updated: product.time
+            exist: product.exist,
+            created: product.created,
+            updated: product.updated
         }
+        elUpdateTime.textContent = lastEditeMessage(result.updated)
         saveData(key, value)
     }
     return
-}
-const dataToUpdateById = (product, elUpdateTime, key) => {
-
-    product.updated = timestamp()
-    updateById(product, key)
-    elUpdateTime.textContent = lastEditeMessage(result.updated)
 }
 // remove children HTML
 const removeAllChildren = (element) => {
@@ -258,4 +255,3 @@ const displayValues = (result) => {
     updateElementValue(existEl, result.exist)
     updateElementValue(dateEl, lastEditeMessage(result.updated))
 }
-/// sort
