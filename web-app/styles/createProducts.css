@@ -262,7 +262,10 @@ a:hover {
 button:hover {
     color: var(--input-border);
 }
-
 .exist-item:hover {
+    cursor: pointer;
+}
+
+#productExist {
     cursor: pointer;
 }
