@@ -10,12 +10,13 @@ let sortBy = ''
 // Event after dom loaded
 document.addEventListener('DOMContentLoaded', function () {
     isAvailable.checked = true
+    sort.value = 'byCreated'
     render(sortBy, 'products')
 })
 
 // Event get sort
 sort.addEventListener('change', e => {
-    const sortBy = e.target.value
+    sortBy = e.target.value
     render(sortBy, 'products')
 })
 
@@ -56,8 +57,10 @@ isAvailable.addEventListener('change', e => {
 window.addEventListener('storage', e => {
 
     if (e.key === 'products') {
+        
         const products = JSON.parse(e.newValue)
         saveData('products', products)
         render(sortBy, 'products')
+
     }
 })
