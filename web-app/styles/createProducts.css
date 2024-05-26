@@ -263,3 +263,6 @@ button:hover {
     color: var(--input-border);
 }
 
+.exist-item:hover {
+    cursor: pointer;
+}
