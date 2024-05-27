@@ -236,8 +236,9 @@ input[type="checkbox"] {
     display: grid;
     width: 100%;
     justify-content: center;
-    margin:  80px auto;
+    margin: 80px auto;
 }
+
 .section-edit-products-contaienr {
     display: flex;
     flex-direction: column;
@@ -245,27 +246,37 @@ input[type="checkbox"] {
     justify-content: center;
     max-width: 400px;
 }
+
 .edit-products-details {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
 }
+
 .edit-products-details div {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 a:hover {
     color: var(--input-border);
 }
+
 button:hover {
     color: var(--input-border);
 }
+
 .exist-item:hover {
     cursor: pointer;
 }
 
 #productExist {
     cursor: pointer;
+}
+
+.nav-icon img {
+    width: 20px;
+    filter: brightness(0) invert(1);
 }
