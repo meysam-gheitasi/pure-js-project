@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/all.min.css" />
+    <title>Book Store</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-center">
+        <div class="cart-btn">
+          <span class="nav-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </span>
+          <div class="cart-items">0</div>
+        </div>
+        <div>
+          <span>Admin</span>
+          <i class="fas fa-gem"></i>
+        </div>
+      </div>
+    </nav>
+    <section class="products">
+      <div class="section-title">
+       <div class="section-title-chaild">
+        <div>
+          <select name="sort-product" id="sortProduct">
+            <i class="fas fa-sort-amount-down"></i>
+            <option value="byCreated">by create</option>
+            <option value="byEdited">by edited</option>
+          </select>
+        </div>
+        <h2>Store</h2>
+        <button class="edit-products-btn">
+          <a href="../index.html">
+            Edit Products
+          </a>
+        </button>
+       </div>
+      </div>
+      <div class="products-center"></div>
+    </section>
+    <div class="cart-overlay">
+      <div class="cart">
+        <span class="close-cart">
+          <i class="fas fa-times"></i>
+        </span>
+        <h2>سبد خرید</h2>
+        <div class="cart-content"></div>
+        <div class="cart-footer">
+          <h3>مجموع قیمت: <span class="cart-total">۸۹</span></h3>
+          <button class="clear-cart btn">حذف محصولات</button>
+        </div>
+      </div>
+    </div>
+    <script src="../functions/shop.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="../styles/createProducts.css" />
+    <title>Product Single</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-center">
+        <div class="cart-btn"></div>
+        <div>
+          <span>Admin</span>
+          <i class="fas fa-gem"></i>
+        </div>
+      </div>
+    </nav>
+
+    <div class="section-edit-products">
+      <div class="section-edit-products-contaienr">
+        <input
+        type="text"
+        id="productTitle"
+        placeholder="Product title"
+        required
+      />
+      <input
+        type="text"
+        id="productPrice"
+        type="number"
+        placeholder="Product price"
+        required
+      />
+      <span class="edit-products-details">
+        <span id="last-edit"></span>
+       <div>
+        <label for="isAvailable">Exist Product:</label>
+        <input type="checkbox" id="productExist" name="productAvaibale" />
+       </div>
+      </span>
+      <span>
+        <a class="btn" href="../index.html">Home</a>
+        <button class="btn" id="deleteProduct">Delete Product</button>
+      </span>
+      </div>
+    </div>
+
+    <script src="../packages/moment.js"></script>
+    <script src="../packages/jalali-moment.js"></script>
+    <script src="../functions/crudMethods.js"></script>
+    <script src="../functions/productSingle.js"></script>
+  </body>
+</html>
