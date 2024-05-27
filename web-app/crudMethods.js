@@ -39,6 +39,7 @@ const updateById = (product, elUpdateTime, key) => {
             price: product.price,
             amount: product.amount,
             exist: product.exist,
+            image: product.image,
             created: product.created,
             updated: product.updated
         }
