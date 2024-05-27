@@ -23,7 +23,7 @@ const displayProducts = (products) => {
   let result = ''
 
   products.forEach(item => {
-    if(item.exist) {
+    if (item.exist) {
       result += `
     <article class="product">
       <div class="img-container">
@@ -86,10 +86,12 @@ const setCartValues = cart => {
 
 const addCartItem = cart => {
 
-  const div = document.createElement('div')
-  div.classList.add('cart-item')
   cartContent.innerHTML = ''
   cart.forEach(item => {
+
+    const div = document.createElement('div')
+    div.classList.add('cart-item')
+
     div.innerHTML += `
       <img src=${item.image} alt=${item.title} />
       <div>
@@ -103,9 +105,8 @@ const addCartItem = cart => {
         <i class="fas fa-chevron-down" data-id=${item.id}></i>
       </div>
     `
-
+    cartContent.appendChild(div)
   })
-  cartContent.appendChild(div)
 }
 
 const showCart = () => {
@@ -132,9 +133,9 @@ const initApp = () => {
   cart = getCart()
   displayProducts(products)
   getCardbuttons()
-  cartProcess()
   setCartValues(cart)
   addCartItem(cart)
+  cartProcess()
 }
 
 
