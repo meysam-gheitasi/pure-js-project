@@ -206,7 +206,7 @@ const createElements = (item) => {
     amountEl.textContent = `amount:${item.amount}`
 
     const aEl = createElement('a')
-    aEl.setAttribute('href', `./editedProducts.html#${item.id}`)
+    aEl.setAttribute('href', `./pages/editedProducts.html#${item.id}`)
     aEl.append(nameEl, priceEl)
 
     const existEl = createElement("input");

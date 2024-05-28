@@ -12,7 +12,7 @@ const productId = location.hash.substring(1)
 let result = getById(productId, 'products')
 
 // cheking existence of result
-!result && location.assign('./createProducts.html')
+!result && location.assign('./index.html')
 
 // call function to display product value
 displayValues(result)
